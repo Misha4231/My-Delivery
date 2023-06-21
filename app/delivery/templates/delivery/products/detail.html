@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block content %}
+    <div class="product-detail">
+        <img src="{{ product.image.url }}" class="detail-header-image">
+        <div class="container">
+            <div class="detail-top">
+                <h1>{{ product.title }}</h1>
+                <div class="detail-buttons">
+                    <span id="like-product" data-action="{% if product in request.user.favourite_products.all %}unlike{% else %}like{% endif %}">
+                        {% if product in request.user.favourite_products.all %}
+                            <img src="{% static 'img/main_pages/full_heart.png' %}" id="like-curr-image">
+                        {% else %}
+                            <img src="{% static 'img/dashboard/heart.png' %}" id="like-curr-image"> 
+                        {% endif %}
+                    </span>
+                    <span id="add-to-cart">
+                        <img src="{% static 'img/main_pages/add.png' %}">
+                    </span>
+                </div>
+            </div>
+            <div class="detail-info">
+                <h2>{{ product.price }}$</h2>
+                <h2><img src="{% static 'img/main_pages/clock.png' %}"> {{ product.max_time }} min</h2>
+            </div>
+        </div>
+    </div>
+    <img src="{% static 'img/main_pages/full_heart.png' %}" style="display: none;" id="like">
+    <img src="{% static 'img/dashboard/heart.png' %}" style="display: none;" id="unlike">
+{% endblock %}
+
+{% block js_include %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            var likeButton = document.querySelector("#like-product")
+            var productSlug = "{{ product.slug }}"
+            var addToCartButton = document.querySelector("#add-to-cart")
+            var loginUrl = '{% url "login" %}'
+            var isAuthenticated
+            if ("{{ request.user.is_authenticated }}" == 'True'){
+                isAuthenticated = true
+            } else{
+                isAuthenticated = false
+            }
+
+            addToCartButton.addEventListener('click', function(){
+                if (!isAuthenticated){
+                    window.location.href = loginUrl
+                }
+                fetch(`/delivery/add_to_cart/${productSlug}/`).then(response => response.json())
+                .then(data => {
+                    
+                })
+                window.location.href = '{% url "cart:cart_detail" %}'
+            })
+
+            likeButton.addEventListener('click', function(){
+                if (!isAuthenticated){
+                    window.location.href = loginUrl
+                }
+                var action = likeButton.dataset.action
+                var newAction;
+                if (action == 'like'){
+                    newAction = 'unlike'
+                } else{
+                    newAction = 'like'
+                }
+                fetch(`/delivery/add_to_favourite/${productSlug}/${action}/`).then(response => response.json())
+                .then(data => {
+                    likeButton.dataset.action = newAction
+                    var imageElement = document.querySelector(`#${action}`);
+                    document.querySelector('#like-curr-image').src = imageElement.src
+                })
+            })
+        })
+    </script>
+{% endblock %}

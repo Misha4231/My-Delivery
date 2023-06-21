@@ -1,0 +1,88 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Create an account' %}{% endblock %}
+
+{% block content %}
+    <div class="auth-form">
+        <h1 class="auth-title">{% trans 'Create an account' %}</h1>
+        {% if form.errors %}
+            <ul class="errors-list">
+                {% for error in form.non_field_errors %}
+                    <li class="error-item">
+                        {% blocktrans %}{{ error }}{% endblocktrans %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <p id="incorrect-code-error">
+                        
+        </p>
+        <p id="specify-email-error">
+
+        </p>
+        <form action="{% url 'customer:register' %}" method="post">
+            {% csrf_token %}
+            <p>
+                <input type="email" id="email-input" name="email" placeholder="E-Mail" class="auth-form-input">
+                <input type="number" id="email-code" placeholder="{% trans 'Email code' %}" required>
+                <a id="email-sender-button">{% trans 'Send code' %}</a>
+                
+            </p>
+            <p>
+                <input type="text" id="firstname-input" placeholder="{% trans 'First name' %}" name="first_name" class="auth-form-input">
+            </p>
+            <p>
+                <input type="text" id="lastname-input" placeholder="{% trans 'Last name' %}" name="last_name" class="auth-form-input">
+            </p>
+            <p>
+                <input type="password" id="password-input" placeholder="{% trans 'Password' %}" name="password" class="auth-form-input">
+            </p>
+            <p>
+                <input type="password" id="password2-input" placeholder="{% trans 'Confirm password' %}" name="password2" class="auth-form-input">
+            </p>
+            
+            <input type="submit" value="{% trans 'Create an account' %}" class="auth-submit-button">
+        </form>
+        <center>{% trans 'or Connect with Social Media' %}</center>
+        <ul class="social-auth-links">
+            <li class="social-auth-item twitter-link">
+                <a href="{% url 'social:begin' 'twitter' %}">
+                    <img src="{% static 'img/dashboard/social/twitter(1).png' %}">
+                    {% trans 'Sign in with Twitter' %}
+                </a>
+            </li>
+            <li class="social-auth-item google-link">
+                <a href="{% url 'social:begin' 'google-oauth2' %}">
+                    <img src="{% static 'img/dashboard/social/google(1).png' %}">
+                    {% trans 'Sign in with Google' %}
+                </a>
+            </li>
+            <li class="social-auth-item facebook-link">
+                <a href="{% url 'social:begin' 'facebook' %}">
+                    <img src="{% static 'img/dashboard/social/facebook.png' %}">
+                    {% trans 'Sign in with Facebook' %}
+                </a>
+            </li>
+        </ul>
+        <center>
+            <a href="{% url 'login' %}" style="font-size: 20px;" class="link">{% trans 'Login' %}</a>
+        </center>
+    </div>
+{% endblock %}
+
+{% block script_include %}
+    <script>
+        document.querySelector('.auth-submit-button').addEventListener('click',function(event){
+            event.preventDefault()
+            if (document.querySelector('#email-code').value == code){
+                document.querySelector('form').submit()
+            } else{
+                document.querySelector('#incorrect-code-error').textContent = ' - Code is incorrect'
+            }
+        })
+    </script>
+    <script src="{% static 'js/email_code.js' %}"></script>
+    <script src="{% static 'js/auth_form.js' %}"></script>
+{% endblock %}

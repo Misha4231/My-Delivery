@@ -1,0 +1,77 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Update profile' %}{% endblock %}
+
+{% block content %}
+    <div class="auth-form">
+        <h1 class="auth-title">{% trans 'Update profile' %}</h1>
+        {% if form.errors %}
+            <ul class="errors-list">
+                {% for error in form.non_field_errors %}
+                    <li class="error-item">
+                        {% blocktrans %}{{ error }}{% endblocktrans %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <p id="incorrect-code-error">
+                        
+        </p>
+        <p id="specify-email-error">
+
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <input type="email" id="email-input" name="email" placeholder="E-Mail" class="auth-form-input" value="{{ form.instance.email }}">
+                <input type="number" id="email-code" placeholder="{% trans 'Email code' %}" style="display: none;">
+                <a id="email-sender-button" style="display: none;">{% trans 'Send code' %}</a>
+            </p>
+            <p>
+                <input type="text" id="firstname-input" placeholder="{% trans 'First name' %}" name="first_name" class="auth-form-input" value="{{ form.instance.first_name }}">
+            </p>
+            <p>
+                <input type="text" id="lastname-input" placeholder="{% trans 'Last name' %}" name="last_name" class="auth-form-input" value="{{ form.instance.last_name }}">
+            </p>
+            <p>
+                <input type="text" id="phonenumber-input" placeholder="{% trans 'Phone number' %}" name="phone_number" class="auth-form-input" value="{{ form.instance.phone_number }}">
+            </p>
+            <input type="submit" value="{% trans 'Continue' %}" class="auth-submit-button">
+        </form>
+    </div>
+{% endblock %}
+
+{% block script_include %}
+    <script>
+        var previousEmail = '{{ form.instance.email }}'
+        var emailCodeInput = document.querySelector('#email-code')
+        var emailCodeButton = document.querySelector('#email-sender-button')
+
+        document.querySelector('#email-input').addEventListener('input', function(){
+            if (previousEmail != document.querySelector('#email-input').value){
+                emailCodeButton.style.display = 'block'
+                emailCodeInput.style.display = 'block'
+            } else if(emailCodeButton.style.display != 'none' && emailCodeInput.style.display != 'none'){
+                emailCodeButton.style.display = 'none'
+                emailCodeInput.style.display = 'none'
+            }
+        })
+
+        document.querySelector('.auth-submit-button').addEventListener('click',function(event){
+            event.preventDefault()
+            if(emailCodeButton.style.display == 'none' && emailCodeInput.style.display == 'none'){
+                document.querySelector('form').submit()
+            } else{
+                if (emailCodeInput.value == code){
+                    document.querySelector('form').submit()
+                } else{
+                    document.querySelector('#incorrect-code-error').textContent = ' - Code is incorrect'
+                }
+            }
+        })
+    </script>
+    <script src="{% static 'js/email_code.js' %}"></script>
+    <script src="{% static 'js/auth_form.js' %}"></script>
+{% endblock %}

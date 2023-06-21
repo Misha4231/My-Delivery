@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Home Page' %}{% endblock %}
+
+
+{% block content %}
+    <div class="homepage-section1">
+        <div class="container vertical-center-container">
+            <div class="homepage-section1-block1">
+                <h1>{% trans 'Time to order food' %}</h1>
+                <a href="{% url 'delivery:products' 'false' %}">
+                    {% trans 'Do my order' %}
+                </a>
+            </div>
+            <img src="{% static 'img/main_pages/figurka.png' %}" class="figurka">
+            <div class="homepage-section1-block3">
+                
+                <img src="{% static 'img/main_pages/burger.png' %}" class="burger">
+            </div>
+        </div>
+    </div>
+    <div class="homepage-section2">
+        <div class="container">
+            <center>
+                <h2>{% trans 'How to order?' %}</h2>
+                <h1>{% trans "It's easy" %}</h1>
+            </center>
+            <ul>
+                <li>
+                    <h3>
+                        {% trans 'Search what you want' %}
+                    </h3>
+                    <img src="{% static 'img/main_pages/arrow.png' %}" class="arrow-icon">
+                </li>
+                <li>
+                    <h3>
+                        {% trans 'Let us know your location' %}
+                    </h3>
+                    <img src="{% static 'img/main_pages/arrow.png' %}" class="arrow-icon">
+                </li>
+                <li>
+                    <h3>
+                        {% trans 'Do your order' %}
+                    </h3>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="homepage-section3">
+        <div class="container vertical-center-container">
+            <div class="homepage-section3-block1">
+                <h1>{% trans 'If you have some questions or problems you always can get help' %}</h1>
+                <a href="#">
+                    {% trans 'Get help' %}
+                </a>
+            </div>
+            <div class="homepage-section3-block2">
+                <img src="{% static 'img/dashboard/question.png' %}">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_include %}
+    
+{% endblock %}

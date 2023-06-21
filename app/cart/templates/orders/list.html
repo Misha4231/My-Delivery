@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Your orders{% endblock %}
+
+
+{% block content %}
+    <div class="orders">
+        <a href="https://t.me/my_deliverbot" class="telegram-button">{% trans 'You can watch for status of your order in our telegram bot' %}</a>
+        {% if process_orders %}
+            <h1>{% trans 'Orders in the process of cooking' %}</h1>
+            {% include 'orders/order_table_list.html' with orders=process_orders %}
+            <hr>
+        {% endif %}
+        {% if unprocessed_orders %}
+            <h1>{% trans 'Orders is already cooked' %}</h1>
+            {% include 'orders/order_table_list.html' with orders=unprocessed_orders %}
+            <hr>
+        {% else %}
+            
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+
+{% block js_include %}
+    
+{% endblock %}

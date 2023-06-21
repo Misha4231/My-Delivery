@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load static %}
+{% for product in products %}
+    <li>
+        <a href="{{ product.get_absolute_url }}">
+            <img src="{{ product.image.url }}">
+            <div class="product-info">
+                <p>
+                    <h3>{{ product.title }}</h3>
+                    <span class="product-price">{{ product.price }}$</span>
+                    <img src="{% static 'img/main_pages/clock.png' %}" style="height: 30px; width: 30px;" class="time-icon">
+                    <span class="product-max-time">
+                        {{ product.max_time }} min
+                    </span>
+                </p>
+            </div>
+        </a>
+    </li>
+{% endfor %}

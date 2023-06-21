@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Products' %}{% endblock %}
+
+
+{% block content %}
+    <div class="products">
+        <div class="container">
+            {% if is_null %}
+                <p>{% trans 'No any products yet' %}</p>
+            
+            {% else %}
+                <div class="products-filter">
+                    <div class="price-products-filter">
+                        <h2>Filter by price:</h2>
+                        <form action="." method="get">
+                            <input type="number" id="from_price" name="from_price" placeholder="{% trans 'Min. Price' %}">
+                            <input type="number" id="to_price" name="to_price" placeholder="{% trans 'Max. Price' %}">
+                            <input type="text" name="query" placeholder="{% trans 'Search by title' %}">
+                            <input type="submit" value="{% trans 'Filter' %}" id="submit-button">
+                        </form>
+                    </div>
+                </div>
+                <ul class="products-list">
+                    {% include 'delivery/products/products_list.html' %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_include %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            var page = 1;
+            var emptyPage = false;
+            var blockRequest = false;
+
+            window.addEventListener('scroll', function(e){
+                var margin = document.body.clientHeight - window.innerHeight - 200
+                if (window.pageYOffset > margin && !emptyPage && !blockRequest){
+                    blockRequest = true
+                    page += 1
+                    var arg;
+                    if (window.location.search){
+                        arg='&'
+                    } else{
+                        arg=''
+                    }
+                    fetch('?products_only=1&'+window.location.search + arg + 'page=' + page).then(response => response.text())
+                        .then(html => {
+                        if (html === ''){
+                            emptyPage = true
+                        } else{
+                            var productList = document.querySelector('.products-list')
+                            productList.insertAdjacentHTML('beforeEnd',html)
+                            blockRequest = false
+                        }
+                    }
+                    )}
+            })
+            const scrollEvent = new Event('scroll')
+            window.dispatchEvent(scrollEvent)
+        })
+    </script>
+{% endblock %}

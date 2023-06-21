@@ -1,0 +1,267 @@
+*{
+    margin: 0;
+    padding: 0;
+    
+    font-family: 'Lato', sans-serif;
+}
+.dashboard {
+    border-radius: 20px;
+    
+    position: absolute;
+    background-color: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+.dashboard-container {
+    padding: 15px 20px;
+}
+.name {
+    padding-right: 100px;
+    font-size: 35px;
+    color: #000;
+    margin-bottom: 15px;
+}
+@media (max-width: 900px){
+    .name {
+        padding-right: 0px;
+        font-size: 15px;
+    }
+}
+.link {
+    text-decoration: underline;
+    color: #000;
+}
+.auth-buttons {
+    margin: 15px 0px;
+    display: flex;
+    justify-content: center;
+}
+.login-button {
+    background-color: #cecece;
+    margin-right: 10px;
+}
+.button-default {
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 10px 65px;
+    border-radius: 20px;
+    -webkit-box-shadow: 8px 0px 24px -12px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 0px 24px -12px rgba(66, 68, 90, 1);
+    box-shadow: 8px 0px 24px -12px rgba(66, 68, 90, 1);
+    text-decoration: none;
+    color: #fff;
+    transition: 0.5s ease-in-out all 0s;
+}
+.button-default:hover{
+    background-color: #444444;
+}
+
+.register-button {
+    background-color: #dbb45f;
+}
+.dashboard-links-list {
+    list-style: none;
+    margin-top: 15px;
+}
+.dashboard-list-item {
+    display: flex;
+    padding: 14px 20px;
+    margin-bottom: 15px;
+}
+.dashboard-list-item a{
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+}
+.dashboard-list-item:hover{
+    background-color: #cfcfcf;
+}
+.dashboard-list-item img{
+    height: 30px;
+    margin-right: 10px;
+    width: 30px;
+    margin-bottom: -8px;
+}
+.avatar{
+    height: 45px;
+    width: 45px;
+}
+.settings-link{
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 10px;
+    top: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+
+
+
+.auth-form {
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 3px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 0px 3px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 0px 3px 24px 0px rgba(66, 68, 90, 1);
+    width: 500px;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+@media (max-width: 650px) {
+    .auth-form{
+        width: 70%;
+    }
+}
+
+.auth-title {
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+@media (max-height: 700px) {
+    .auth-form{
+        padding: 30px;
+    }
+    .auth-title{
+        padding-top: 80px;
+        font-size: 35px;
+    }
+}
+
+.errors-list {
+    margin-bottom: 15px;
+}
+.error-item {
+}
+.auth-form{
+
+}
+.auth-form input{
+    outline: none;
+    width: 100%;
+    margin-bottom: 25px;
+}
+.auth-submit-button {
+    font-weight: 700;
+    font-size: 25px;
+    border: none;
+    color: #fff;
+    background-color: #5c5b5b;
+    padding: 10px 0px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+@media (max-width: 290px){
+    .auth-submit-button{
+        font-size: 15px;
+    }
+    .auth-title{
+        padding-top: 70px;
+    }
+}
+.auth-form-input{
+    border: none;
+    font-size: 20px;
+    border-bottom: 1px solid #7e7e7e;
+}
+.social-auth-links {
+    list-style: none;
+    margin-top: 20px;
+}
+.social-auth-item {
+    cursor: pointer;
+    width: 100%;
+    border-radius: 20px;
+    padding: 7px 0px;
+    margin-bottom: 15px;
+}
+.social-auth-item a{
+    text-decoration: none;
+
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.social-auth-item img{
+    width: 50px;
+    height: 50px;
+    margin: 0px 15px;
+}
+.twitter-link {
+    background-color: #53affa;
+}
+.google-link {
+    background-color: #ee6d6d;
+}
+.facebook-link {
+    background-color: #4c66f8;
+}
+
+
+.avatar-list {
+    list-style: none;
+    flex-wrap: wrap;
+    display: flex;
+}
+.avatar-item {
+    text-align: center;
+    font-size: 25px;
+    margin: 10px;
+    padding: 5px;
+}
+.avatar-item:hover{
+    background-color: #c5c5c5;
+}
+.avatar-option {
+    height: 130px;
+    width: 130px;
+}
+@media (max-width: 450px){
+    .avatar-option {
+        height: 100px;
+        width: 100px;
+    }
+}
+.avatar__tick,.avatar__tick_example {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    margin-left: 5px;
+}
+.home-link{
+    text-decoration: none;
+    font-size: 20px;
+    color: #000;
+    float: right;
+}
+
+#specify-email-error, #incorrect-code-error{
+    margin-bottom: 10px;
+}
+
+#email-code{
+    width: 50%;
+    float: left;
+    font-size: 20px;    
+    border: none;
+    border-bottom: 1px solid #619252;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+#email-sender-button{
+    float: right;
+    background-color: #619252;
+    color: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-right: 15px;
+}

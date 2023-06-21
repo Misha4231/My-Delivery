@@ -1,0 +1,85 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block js_include %}{% endblock %}
+</head>
+<body>
+    <div id="dashboard"></div>
+    
+        <header>
+            <a href="/">
+                <img src="{% static 'img/favicon.ico' %}" class="logo">
+            </a>
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <div class="languages">
+                <span>{% trans "Language" %}:</span>
+                    <ul class="languages-list">
+                        {% for language in languages %}
+                            <li>
+                                <a href="/{{ language.code }}/" {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %}>
+                                    {{ language.name_local }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </div>
+            <div id="dashboard_call_button">
+                <span class="line">
+        
+                </span>
+                <span class="line">
+        
+                </span>
+                <span class="line">
+                    
+                </span>
+            </div>
+            
+        </header>
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <footer>
+            <center>
+                <img src="{% static 'img/favicon.ico' %}">
+            </center>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#dashboard_call_button').addEventListener('click', function(){
+                fetch('{% url "customer:get_dashboard" %}',{
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then(response => response.json()).then(data => {
+                    var html = data.dashboard_html
+                    document.querySelector('body').classList.add('unactive')
+                    document.querySelector('#dashboard').innerHTML = html
+                })
+            })
+            document.addEventListener('click', function(event){
+                var target = event.target
+                var dashboardDiv = document.querySelector('#dashboard')
+
+                if(target !== dashboardDiv && !dashboardDiv.contains(target)){
+                    document.body.classList.remove('unactive')
+                    document.querySelector('#dashboard').innerHTML = ''
+                }
+            })
+        })
+    </script>
+</body>
+</html>

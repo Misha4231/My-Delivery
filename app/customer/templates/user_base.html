@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/user_styles.css' %}">
+    
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+
+    <script>
+        function getCookie(name) {
+            if (!document.cookie) {
+                return null;
+            }
+
+            const xsrfCookies = document.cookie.split(';')
+            .map(c => c.trim())
+            .filter(c => c.startsWith(name + '='));
+
+            if (xsrfCookies.length === 0) {
+                return null;
+            }
+            return decodeURIComponent(xsrfCookies[0].split('=')[1]);
+        }
+    </script>
+    {% block script_include %}
+    {% endblock %}
+</body>
+</html>

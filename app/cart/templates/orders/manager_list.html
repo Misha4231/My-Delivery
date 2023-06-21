@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Order list' %}{% endblock %}
+
+
+{% block content %}
+    {% include 'orders/order_table_list.html' with orders=orders is_manage='true' %}
+{% endblock %}
+
+
+{% block js_include %}
+    
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Choose avatar' %}{% endblock %}
+
+{% block content %}
+    <div class="auth-form">
+        <h1 class="auth-title">{% trans 'Choose avatar' %}</h1>
+        <ul class="avatar-list">
+            {% for avatar in avatars %}
+                <li class="avatar-item" data-id="{{ avatar.id }}">
+                    <p>
+                        <img src="{{ avatar.image.url }}" class="avatar-option">
+                    </p>
+                    {% blocktrans %}{{ avatar.title }}{% endblocktrans %}
+                    {% if request.user.avatar == avatar %}
+                        <img src="{% static 'img/dashboard/accept.png' %}" class="avatar__tick">
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'home_page' %}" class="home-link">{% trans 'Go to home page' %} →</a>
+    </div>
+    <img src="{% static 'img/dashboard/accept.png' %}" class="avatar__tick_example" style="display: none;">
+{% endblock %}
+
+{% block script_include %}
+    <script>
+        var avatars = document.querySelectorAll('.avatar-item')
+
+        avatars.forEach(function(avatar){
+            avatar.addEventListener('click', function(event){
+                var choosedOption = event.target
+                if(choosedOption.tagName=='IMG'){
+                    choosedOption = choosedOption.parentElement.parentElement
+                }
+                
+                var csrftoken = getCookie('csrftoken')
+                
+                fetch('{% url "customer:choose_avatar" %}',{
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken
+                    },
+                    body: JSON.stringify({choosedId: choosedOption.dataset.id})
+                }).then(response => response.json()).then(data => {
+                    try{
+                        tickElement = document.querySelector('.avatar__tick')
+                        var new_tick = tickElement
+                        tickElement.innerHTML = ''
+                        
+                        choosedOption.appendChild(new_tick)
+                    }
+                    catch(error){
+                        var tickEl = document.querySelector('.avatar__tick_example')
+                        tickEl.style.display = 'inline'
+                        choosedOption.appendChild(tickEl)
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}

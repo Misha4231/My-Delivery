@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Create order' %}{% endblock %}
+
+
+{% block content %}
+    <div class="order-container">
+        <h1>{% trans 'Checkout' %}</h1>    
+        <form method="post" action="{% url 'delivery:order_create' %}" class="order-form">
+            <p>
+                <input type="text" id="firstname-input" placeholder="{% trans 'First name' %}" name="first_name" class="order-form-input">
+            </p>
+            <p>
+                <input type="text" id="lastname-input" placeholder="{% trans 'Last name' %}" name="last_name" class="order-form-input">
+            </p>
+            <p>
+                <input type="email" id="email-input" placeholder="{% trans 'Email' %}" name="email" class="order-form-input">
+            </p>
+            <p>
+                <div class="autocomplete-container" id="autocomplete-container"></div>
+            </p>
+            <select name="pay_type" class="form-select" required id="id_pay_type">
+                <option value selected>{% trans 'Choose pay type' %}</option>
+                <option value="card">{% trans 'By card' %}</option>
+                <option value="cash">{% trans 'By cash' %}</option>
+            </select>
+            {% csrf_token %}
+            
+            <p>
+                <input type="submit" value="{% trans 'Place order' %}">
+            </p>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+{% block js_include %}
+    <script src="{% static 'js/autoComplete.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% load i18n %}
+{% for order in orders %}
+    <hr>
+    <table class="cart table table-dark table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <td>{% trans 'Image' %}</td>
+                <td>{% trans 'Title' %}</td>
+                <td>{% trans 'Price' %}</td>
+                <td>{% trans 'Quantity' %}</td>
+                <td>{% trans 'Total' %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+                <tr>
+                    <td>
+                        <a href="{{ item.product.get_absolute_url }}">
+                            <img src="{{ item.product.image.url }}" height="100px" width="400px">
+                        </a>
+                    </td>
+                    <td>{{ item.product.title }}</td>
+                    <td>{{ item.product.price }}$</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.get_cost }}$</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td>{% trans 'Total' %}</td>
+                    <td colspan="3"></td>
+                    <td>{{ order.get_total_cost }}$</td>
+                </tr>
+        </tbody>
+    </table>
+                
+    <table class="cart table table-dark table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <td>{% trans 'Id' %}</td>
+                <td>{% trans 'Pay type' %}</td>
+                <td>{% trans 'Address' %}</td>
+                <td>{% trans 'Ordred time' %}</td>
+                <td>{% trans 'Status' %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{% if order.pay_type == 'cash' %}{% trans 'By cash' %}{% else %}{% trans 'By card' %}{% endif %}</td>
+                <td>{{ order.address }}</td>
+                <td>{{ order.created }}</td>
+                <td>
+                    {% if is_manage == 'true' %}
+                    
+                        <form action="{% url 'delivery:change_status' order.id %}" method="post">
+                            {% csrf_token %}
+                            <select class="status-select" name="status">
+
+                                <option {% if order.get_status == 'Queue' %}selected{% endif %} value="Queue">{% trans 'Queue' %}</option>
+                                <option {% if order.get_status == 'Getting_ready' %}selected{% endif %} value="Getting_ready">{% trans 'Getting ready' %}</option>
+                                <option {% if order.get_status == 'Ready' %}selected{% endif %} value="Ready">{% trans 'Ready' %}</option>
+                            </select>
+                            
+                            <input type="submit" value="{% trans 'Change' %}">
+                        </form>
+                       
+                    {% else %}
+                        {% blocktrans %}{{ order.get_status }}{% endblocktrans %}
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+                    
+{% endfor %}

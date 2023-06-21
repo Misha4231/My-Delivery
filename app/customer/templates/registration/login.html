@@ -1,0 +1,59 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Log-in' %}{% endblock %}
+
+{% block content %}
+    <div class="auth-form">
+        <h1 class="auth-title">{% trans 'Login' %}</h1>
+        {% if form.errors %}
+            <ul class="errors-list">
+                {% for error in form.non_field_errors %}
+                    <li class="error-item">
+                        {% blocktrans %}{{ error }}{% endblocktrans %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <p>
+                <input type="text" id="email-input" name="username" placeholder="E-Mail" class="auth-form-input">
+            </p>
+            <p>
+                <input type="password" id="password-input" placeholder="{% trans 'Password' %}" name="password" class="auth-form-input">
+            </p>
+            <input type="hidden" name="next" value="{{ next }}"/>
+            <input type="submit" value="{% trans 'Continue' %}" class="auth-submit-button">
+        </form>
+        <center>{% trans 'or Connect with Social Media' %}</center>
+        <ul class="social-auth-links">
+            <li class="social-auth-item twitter-link">
+                <a href="{% url 'social:begin' 'twitter' %}">
+                    <img src="{% static 'img/dashboard/social/twitter(1).png' %}">
+                    {% trans 'Sign in with Twitter' %}
+                </a>
+            </li>
+            <li class="social-auth-item google-link">
+                <a href="{% url 'social:begin' 'google-oauth2' %}">
+                    <img src="{% static 'img/dashboard/social/google(1).png' %}">
+                    {% trans 'Sign in with Google' %}
+                </a>
+            </li>
+            <li class="social-auth-item facebook-link">
+                <a href="{% url 'social:begin' 'facebook' %}">
+                    <img src="{% static 'img/dashboard/social/facebook.png' %}">
+                    {% trans 'Sign in with Facebook' %}
+                </a>
+            </li>
+        </ul>
+        <center>
+            <a href="{% url 'customer:register' %}" style="font-size: 20px;" class="link">{% trans 'Register' %}</a>
+        </center>
+    </div>
+
+    {% block script_include %}
+        <script src="{% static 'js/auth_form.js' %}"></script>
+    {% endblock %}
+{% endblock %}

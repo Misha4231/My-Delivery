@@ -1,0 +1,105 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block title %}{% trans 'Dashboard' %}{% endblock %}
+
+{% block content %}
+    <div class="dashboard">
+        <div class="dashboard-container">
+            {% if is_manager %}
+                <h2 class="name">{% trans 'Manager zone' %}</h2>
+                <hr>
+                <ul class="dashboard-links-list">
+                    <li class="dashboard-list-item">
+                        <a href="{% url 'delivery:orders_control' %}">
+                            <img src="{% static 'img/dashboard/shopping-bag.png' %}">
+                            {% trans 'Orders Control' %}
+                        </a>
+                    </li>
+                    <li class="dashboard-list-item">
+                        <a href="{% url 'logout' %}">
+                            <img src="{% static 'img/dashboard/logout.png' %}">
+                            {% trans 'Logout' %}
+                        </a>
+                    </li>
+                </ul>
+            {% else %}
+                {% if request.user.is_authenticated %}
+                    <h2 class="name">
+                        {% if request.user.avatar %}
+                            <img src="{{ request.user.avatar.image.url }}" class="avatar">
+                        {% else %}
+                            <img src="{% static 'img/dashboard/no-avatar.png' %}" class="avatar">
+                        {% endif %}
+                        <a href="{% url 'customer:choose_avatar' %}">
+                            <img src="{% static 'img/dashboard/settings.png' %}" class="settings-link">
+                        </a>
+                        {{ request.user.get_full_name }}
+                    </h2>
+                    <a href="{% url 'customer:update_profile' %}" class="link">{% trans 'My profile data' %}</a>
+
+                {% else %}
+                    <h2 class="name">My profile</h2>
+                    <div class="auth-buttons">
+                        <a href="{% url 'login' %}" class="login-button button-default">{% trans 'Login' %}</a>
+                        <a href="{% url 'customer:register' %}" class="register-button button-default">{% trans 'Register' %}</a>
+                    </div>
+                {% endif %}
+
+                <ul class="dashboard-links-list">
+                    <li class="dashboard-list-item">
+                        <a href="{% url 'delivery:fav_products' 'true' %}">
+                            <img src="{% static 'img/dashboard/heart.png' %}">
+                            {% trans 'Favoutite' %}
+                        </a>
+                    </li>
+                    <li class="dashboard-list-item">
+                        <a href="{% url 'delivery:order_list' %}">
+                            <img src="{% static 'img/dashboard/shopping-bag.png' %}">
+                            {% trans 'Orders' %}
+                        </a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="dashboard-list-item">
+                            <a href="{% url 'cart:cart_detail' %}">
+                                <img src="{% static 'img/dashboard/shopping-cart.png' %}">
+                                {% trans 'Cart' %}
+                            </a>
+                        </li>
+                        <hr>
+                        <li class="dashboard-list-item">
+                            <a href="{% url 'logout' %}">
+                                <img src="{% static 'img/dashboard/logout.png' %}">
+                                {% trans 'Logout' %}
+                            </a>
+                        </li>
+                        <li class="dashboard-list-item">
+                            <a href="{% url 'password_change' %}">
+                                <img src="{% static 'img/dashboard/reset-password.png' %}">
+                                {% trans 'Change your password' %}
+                            </a>
+                        </li>
+                    {% else %}
+                        <hr>
+                        <li class="dashboard-list-item">
+                            <a href="{% url 'password_reset' %}">
+                                <img src="{% static 'img/dashboard/reset-password.png' %}">
+                                {% trans 'Reset your password' %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    <hr>
+                    <li class="dashboard-list-item">
+                        <a href="">
+                            <img src="{% static 'img/dashboard/question.png' %}">
+                            {% trans 'Want some help?' %}
+                        </a>
+                    </li>
+                </ul>
+            
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
