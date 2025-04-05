@@ -1,11 +1,6 @@
-{% extends 'user_base.html' %}
 {% load static %}
 {% load i18n %}
 
-
-{% block title %}{% trans 'Dashboard' %}{% endblock %}
-
-{% block content %}
     <div class="dashboard">
         <div class="dashboard-container">
             {% if is_manager %}
@@ -102,4 +97,3 @@
             {% endif %}
         </div>
     </div>
-{% endblock %}

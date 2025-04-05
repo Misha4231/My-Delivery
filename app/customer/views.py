@@ -15,9 +15,12 @@ def get_dashboard(request):
 
 def give_email_code(request):
     random_digit = random.randint(10000,99999)
+    
     body = json.loads(request.body.decode('utf-8'))
     email = body['send_email']
+    
     send_email_code.delay(email,random_digit)
+    
     return JsonResponse({'code': random_digit})
 
 def register(request):
@@ -29,7 +32,7 @@ def register(request):
                 user_form.cleaned_data['password']
             )
             new_user.save()
-            login(request=request, user=new_user)
+            login(request=request, user=new_user, backend="django.contrib.auth.backends.ModelBackend")
             
             return redirect('home_page')
         else:

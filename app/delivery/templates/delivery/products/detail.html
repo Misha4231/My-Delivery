@@ -6,7 +6,9 @@
 
 {% block content %}
     <div class="product-detail">
-        <img src="{{ product.image.url }}" class="detail-header-image">
+        <center>
+            <img src="{{ product.image.url }}" class="detail-header-image">
+        </center>
         <div class="container">
             <div class="detail-top">
                 <h1>{{ product.title }}</h1>
@@ -49,13 +51,13 @@
 
             addToCartButton.addEventListener('click', function(){
                 if (!isAuthenticated){
-                    window.location.href = loginUrl
+                    window.location.href = loginUrl;
+                    return;
                 }
-                fetch(`/delivery/add_to_cart/${productSlug}/`).then(response => response.json())
-                .then(data => {
-                    
-                })
-                window.location.href = '{% url "cart:cart_detail" %}'
+                fetch(`/delivery/add_to_cart/${productSlug}/`).then(response => response.json());
+                setTimeout(() => {
+                    window.location.href = '{% url "cart:cart_detail" %}'
+                }, 1500);
             })
 
             likeButton.addEventListener('click', function(){

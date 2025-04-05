@@ -2,13 +2,16 @@ from aiogram import Bot,Dispatcher,executor,types
 import logging
 import redis
 import psycopg2
-from main_vars import vars
 import pandas as pd
 from matplotlib import pyplot as plt
 import io
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+import os
+from dotenv import load_dotenv
 
-API_TOKEN = vars.API_TOKEN
+load_dotenv()
+
+API_TOKEN = os.environ['BOT_API_TOKEN']
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,16 +20,19 @@ order_column_names = ['id','pay_type','address','created','email','first_name','
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-r = redis.Redis(host='localhost',port=6379,decode_responses=True)
-connection = psycopg2.connect(host="localhost",
-    port=5432,
-    database="delivery",
-    user="delivery",
-    password=vars.DB_PASSWORD)
+r = redis.Redis(host=os.environ['REDIS_HOST'],port=os.environ['REDIS_PORT'],decode_responses=True)
+connection = psycopg2.connect(host=os.environ['POSTGRES_HOST'],
+    port=os.environ['POSTGRES_PORT'],
+    database=os.environ['POSTGRES_DB'],
+    user=os.environ['POSTGRES_USER'],
+    password=os.environ['POSTGRES_PASSWORD'])
 
 cursor = connection.cursor()
 
-admin_ids = [811338310,]
+admin_ids = []
+for id in os.environ['BOT_ADMIN_IDS'].split(','):
+    if len(id) > 0:
+        admin_ids.append(int(id))
 
 @dp.message_handler(commands=['start','help'])
 async def send_welcome(message: types.Message):
@@ -51,10 +57,14 @@ async def new_user_count_handler(call: types.CallbackQuery):
 
     cursor.execute("SELECT date_joined FROM customer_customer WHERE date_joined > (CURRENT_DATE - interval '1 year')")
     users_data = cursor.fetchall()
+    
+    if (len(users_data) == 0):
+        await bot.send_message(call.from_user.id, "No data found.")
+        return
 
     users_DataFrame = pd.DataFrame(users_data,columns=['date_joined'])
     users_DataFrame['date_joined'] = pd.to_datetime(users_DataFrame['date_joined'])
-    print(users_DataFrame)
+    
     lastyear_users = users_DataFrame.groupby(users_DataFrame['date_joined'].dt.month).size()
     
     lastyear_users.plot.bar(xlabel='month',ylabel='count',rot=0)
@@ -69,6 +79,10 @@ async def most_paytype_stat_handler(call: types.CallbackQuery):
 
     cursor.execute("SELECT * FROM delivery_order")
     order_data = cursor.fetchall()
+    
+    if (len(order_data) == 0):
+        await bot.send_message(call.from_user.id,"No data found.")
+        return
 
     order_DataFrame = pd.DataFrame(order_data,columns=order_column_names)
     value_counts = order_DataFrame['pay_type'].value_counts()
@@ -85,6 +99,9 @@ async def most_paytype_stat_handler(call: types.CallbackQuery):
 async def most_paytype_stat_handler(call: types.CallbackQuery):
     cursor.execute("SELECT * FROM delivery_order WHERE created > (CURRENT_DATE - interval '10 days')")
     order_data = cursor.fetchall()
+    if (len(order_data) == 0):
+        await bot.send_message(call.from_user.id,"No data found.")
+        return
 
     df = pd.DataFrame(order_data, columns=order_column_names)
     df['created'] = pd.to_datetime(df['created'])

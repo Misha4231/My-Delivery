@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from django.utils.translation import gettext_lazy as _
 from pathlib import Path
-from main_vars import vars
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = vars.SECRET_KEY
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,11 +92,11 @@ WSGI_APPLICATION = 'my_delivery.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'delivery',
-        'USER': 'delivery',
-        'PASSWORD': vars.DB_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ['POSTGRES_DB'],
+        'USER': os.environ['POSTGRES_USER'],
+        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'HOST': os.environ['POSTGRES_HOST'],
+        'PORT': os.environ['POSTGRES_PORT'],
     }
 }
 #Passqwe52314
@@ -152,6 +154,7 @@ LOCALE_PATHS = [
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -168,7 +171,7 @@ CART_SESSION_ID = 'cart'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': f"redis://{os.environ['REDIS_HOST']}:{os.environ['REDIS_PORT']}/1",
         "TIMEOUT": 86400,
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient'
@@ -176,8 +179,8 @@ CACHES = {
     }
 }
 
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_HOST = os.environ['REDIS_HOST']
+REDIS_PORT = os.environ['REDIS_PORT']
 
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -187,14 +190,14 @@ LOGIN_REDIRECT_URL = 'home_page'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = vars.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = vars.EMAIL_HOST_PASSWORD
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ['SMTP_HOST']
+EMAIL_HOST_USER = os.environ['SMTP_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['SMTP_HOST_PASSWORD']
+EMAIL_PORT = os.environ['SMTP_PORT']
+EMAIL_USE_TLS = os.environ['SMTP_USE_TLS']
 
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BROKER_URL = f"redis://{os.environ['REDIS_HOST']}:{os.environ['REDIS_PORT']}"
+CELERY_RESULT_BACKEND = f"redis://{os.environ['REDIS_HOST']}:{os.environ['REDIS_PORT']}"
 
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
@@ -203,8 +206,8 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
 ]
 
-SOCIAL_AUTH_TWITTER_KEY = vars.SOCIAL_AUTH_TWITTER_KEY
-SOCIAL_AUTH_TWITTER_SECRET = vars.SOCIAL_AUTH_TWITTER_SECRET
+SOCIAL_AUTH_TWITTER_KEY = os.environ['SOCIAL_AUTH_TWITTER_KEY']
+SOCIAL_AUTH_TWITTER_SECRET = os.environ['SOCIAL_AUTH_TWITTER_SECRET']
 
 SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.social_auth.social_details',
@@ -219,20 +222,20 @@ SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.user.user_details',
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = vars.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = vars.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
 
-SOCIAL_AUTH_FACEBOOK_KEY = vars.SOCIAL_AUTH_FACEBOOK_KEY
-SOCIAL_AUTH_FACEBOOK_SECRET = vars.SOCIAL_AUTH_FACEBOOK_SECRET
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
-STRIPE_PUBLISHABLE_KEY = vars.STRIPE_PUBLISHABLE_KEY
-STRIPE_SECRET_KEY = vars.STRIPE_SECRET_KEY
+STRIPE_PUBLISHABLE_KEY = os.environ['STRIPE_PUBLISHABLE_KEY']
+STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
 STRIPE_API_VERSION = '2022-11-15'
-STRIPE_WEBHOOK_SECRET = vars.STRIPE_WEBHOOK_SECRET
+STRIPE_WEBHOOK_SECRET = os.environ['STRIPE_WEBHOOK_SECRET']
 
 #python3 -m celery -A my_delivery worker
 #python3 manage.py runserver_plus --cert-file cert.crt

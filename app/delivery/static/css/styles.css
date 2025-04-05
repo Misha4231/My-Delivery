@@ -6,7 +6,7 @@
 }
 
 body{
-    background-color: #363636;
+    background-color: #1a1a1a;
     height: 100%;
 }
 body.unactive::before{
@@ -21,22 +21,27 @@ body.unactive::before{
 }
 
 footer{
-    background-color: rgb(236, 135, 135);
+    background-color: #c01e1e;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 100px;
+    height: 50px;
 }
 footer img{
-    height: 100px;
-    width: 200px;
+    height: 50px;
+
 }
 #dashboard{
+    position: absolute;
+    background-color: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 999;
 }
 header{
-    background-color: rgb(236, 135, 135);
+    background-color: #c01e1e;
     position: fixed;
     left: 0;
     top: 0;
@@ -52,6 +57,7 @@ header{
 .content{
     margin-top: 130px;
     margin-bottom: 150px;
+    z-index: 1;
 }
 .logo {
     cursor: pointer;
@@ -100,7 +106,7 @@ header{
 }
 
 .homepage-section1 {
-    background: linear-gradient(to right, gray 50%, rgb(236, 135, 135) 50%);
+    background: linear-gradient(to right, gray 50%, #c01e1e 50%);
     height: 700px;
     
 }
@@ -113,7 +119,7 @@ header{
 .homepage-section1 a{
     font-size: 40px;
     text-decoration: none;
-    background-color: rgb(236, 135, 135);
+    background-color: #c01e1e;
     padding: 20px 45px;
     border-radius: 40px;
 }
@@ -129,13 +135,16 @@ header{
 }
 .homepage-section1-block3 {
     width: 50%;
-    background-color: rgb(236, 135, 135);
+    background-color: #c01e1e;
     display: flex;
 }
 .figurka{
    width: 300px;
-   margin-left: 40px;
+   margin-left: 100px;
    height: 700px;
+   background-color: #c01e1e;
+   transform: skew(-10deg);
+   z-index: 1;
 }
 .burger{
     margin-top:100px;
@@ -158,7 +167,7 @@ header{
 }
 .homepage-section2 h1{
     font-size: 50px;
-    color: rgb(236, 135, 135);
+    color: #c01e1e;
 }
 .homepage-section2 h2{
     font-size: 35px;
@@ -170,7 +179,7 @@ header{
     display: flex;
 }
 .homepage-section2 h3{
-    background-color: rgb(236, 135, 135);
+    background-color: #c01e1e;
     margin-right: 20px;
     padding: 25px 25px;
     border-radius: 20px;
@@ -211,7 +220,7 @@ header{
 .homepage-section3-block1 a{
     font-size: 30px;
     text-decoration: none;
-    background-color: rgb(236, 135, 135);
+    background-color: #c01e1e;
     padding: 10px 25px;
     border-radius: 40px;
 }
@@ -221,7 +230,7 @@ header{
 }
 
 .products-filter {
-    background-color: rgb(236, 135, 135);
+    background-color: #c01e1e;
     font-size: 30px;
     
     padding: 25px;
@@ -252,8 +261,7 @@ header{
 
 .products-list li a img{
     border-radius: 20px;
-    width: 70%;
-    height: 100%;
+    height: 500px;
 }
 @media (max-width:850px){
     .products-list li a{
@@ -291,7 +299,8 @@ header{
     margin-bottom: 40px;
 }
 .detail-header-image {
-    width: 100%;
+    height: 600px;
+    
 }
 
 .detail-top {

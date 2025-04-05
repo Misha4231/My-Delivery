@@ -53,6 +53,7 @@ def orders_control(request):
 @login_required
 def order_list(request):
     orders = Order.objects.filter(email=request.user.email)
+
     process_orders = []
     unprocessed_orders = []
     for order in orders:

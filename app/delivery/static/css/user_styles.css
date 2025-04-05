@@ -7,11 +7,7 @@
 .dashboard {
     border-radius: 20px;
     
-    position: absolute;
-    background-color: #fff;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%)
+    
 }
 .dashboard-container {
     padding: 15px 20px;

@@ -1,9 +1,12 @@
 var code;
 
-document.querySelector('#email-sender-button').addEventListener('click', function(event){
-    var email = document.querySelector('#email-input').value
+document.querySelector('#email-sender-button').addEventListener('click', function (event) {
+    event.preventDefault();
+    var email = document.querySelector('#email-input').value;
+    
     if (email){
-        var url = '/customer/give_email_code/'
+        var url = window.location.pathname.startsWith('/en/') ? '/en/customer/give_email_code/' : 'uk/customer/give_email_code/';
+
         var csrftoken = getCookie('csrftoken')
         fetch(url,{
             method: 'POST',
