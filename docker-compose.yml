@@ -38,6 +38,7 @@ services:
     depends_on:
       - server
     volumes:
+      - media_volume:/django-app/media
       - static_volume:/django-app/staticfiles
 
   celery-worker:
